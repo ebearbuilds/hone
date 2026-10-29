@@ -305,6 +305,29 @@ body{font-family:var(--font);letter-spacing:-.01em;font-size:15px;background:rad
 
 @media(max-width:900px){.cat-cards{grid-template-columns:repeat(2,1fr)}.stats-strip{grid-template-columns:repeat(2,1fr)}.home-hero h1{font-size:60px}}
 @media(max-width:560px){.cat-cards{grid-template-columns:1fr}.cat-icon{height:140px}.home-hero{padding:24px 18px 18px}.home-hero h1{font-size:48px}.stats-strip,.cat-cards,.modes-grid{padding-left:18px;padding-right:18px}.home-header,.game-topbar{padding:0 18px}.q-problem{font-size:54px}.question-card{padding:36px 20px}.cat-screen-title{font-size:36px}.game-title{display:none}}
+
+/* new games */
+.est-col{display:flex;flex-direction:column;gap:6px;align-items:center;font-size:44px;font-weight:500;letter-spacing:-.04em;line-height:1.1;margin:10px 0 4px}
+.est-bar{height:6px;background:var(--fill);border-radius:999px;overflow:hidden;width:100%;margin-top:16px}
+.est-bar>i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#9fe0ff,#c8b8ff,#ffc2d9);transition-property:width;transition-timing-function:linear}
+.wp-list{display:flex;flex-direction:column;gap:12px;margin:12px 0 16px}
+.wp-pair{display:flex;align-items:center;justify-content:center;gap:16px;font-size:28px;font-weight:500;letter-spacing:-.03em}
+.wp-pair .dash{color:var(--text3)}
+.oo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
+.oo-tile{padding:28px 6px;border-radius:var(--r-lg);border:1px solid var(--border2);background:var(--card);color:var(--text);font:inherit;font-size:24px;font-weight:500;letter-spacing:-.03em;cursor:pointer;transition:background .12s,border-color .12s;word-break:break-word}
+.oo-tile:hover:not(:disabled){background:var(--fill);border-color:var(--text)}
+.oo-tile:disabled{cursor:default}
+.oo-tile.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark)}
+.oo-tile.wrong{background:var(--red-light);border-color:var(--red);color:var(--red)}
+.bug-code{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;font-family:'JetBrains Mono','Geist Mono',monospace;font-size:14px;text-align:left;margin-top:6px}
+.bug-line{display:flex;gap:16px;width:100%;padding:7px 14px;border:0;border-left:3px solid transparent;background:transparent;color:var(--text);font:inherit;text-align:left;cursor:pointer;white-space:pre;overflow-x:auto}
+.bug-line:hover:not(:disabled){background:var(--fill)}
+.bug-line:disabled{cursor:default}
+.bug-line .n{color:var(--text3);min-width:18px;text-align:right;user-select:none}
+.bug-line.ok{background:var(--green-light);border-left-color:var(--green)}
+.bug-line.bad{background:var(--red-light);border-left-color:var(--red)}
+.bug-why{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.6;color:var(--text2);text-align:left}
+@media(max-width:480px){.oo-tile{font-size:19px;padding:22px 4px}.est-col{font-size:36px}.wp-pair{font-size:22px}}
 </style>
 </head>
 <body>
@@ -460,7 +483,7 @@ function show(id){
   document.getElementById(id).classList.add('active');
 }
 
-function goHome(){ show('homeScreen'); renderHome(); }
+function goHome(){ if(typeof stopNewGameTimers==='function') stopNewGameTimers(); show('homeScreen'); renderHome(); }
 
 var MODES = [
   {id:'math',name:'Math Sprint',cat:'Speed',color:'orange',
@@ -532,6 +555,24 @@ var MODES = [
   {id:'calibrate',name:'Confidence Calibration',cat:'Logic',color:'green',
    desc:'Answer a question, then rate how confident you are. Tracks if your confidence matches reality.',
    svg:'<circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 20 L18 20 L20 12 L22 28 L28 20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'},
+  {id:'percent',name:'Percentage Snap',cat:'Speed',color:'orange',
+   desc:'Percent of a number, add or subtract a percent. 60 seconds, type the answer, no calculator.',
+   svg:'<circle cx="12" cy="12" r="4.500" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="28" cy="28" r="4.500" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="31" y1="8" x2="9" y2="32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'},
+  {id:'mult',name:'Multiplication Tables',cat:'Speed',color:'orange',
+   desc:'60 seconds of times tables up to 12 × 12. Facts you miss come back more often.',
+   svg:'<rect x="5" y="5" width="30" height="30" rx="8" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M14 14 L26 26 M26 14 L14 26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'},
+  {id:'estsum',name:'Estimate the Sum',cat:'Speed',color:'orange',
+   desc:'A column of numbers flashes and vanishes. Pick the closest total without adding exactly.',
+   svg:'<path d="M28 8 H12 L22 20 L12 32 H28" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'},
+  {id:'wordpairs',name:'Word Pairs',cat:'Memory',color:'blue',
+   desc:'Memorize random word pairs, then pick the partner of each word. Pairs grow every round.',
+   svg:'<rect x="3" y="12" width="13" height="16" rx="4" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="24" y="12" width="13" height="16" rx="4" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="16" y1="20" x2="24" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'},
+  {id:'oddone',name:'Odd One Out',cat:'Logic',color:'green',
+   desc:'Six items, one breaks the rule. Numbers and words, with the reason shown after each answer.',
+   svg:'<circle cx="10" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="22" cy="14" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="16" cy="28" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="31" cy="28" r="5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>'},
+  {id:'spotbug',name:'Spot the Bug',cat:'Code',color:'purple',
+   desc:'A short Python or JavaScript snippet with one buggy line. Tap it, then read why it breaks.',
+   svg:'<ellipse cx="20" cy="23" rx="8" ry="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 17 L6 13 M28 17 L34 13 M12 25 L5 25 M28 25 L35 25 M14 32 L9 36 M26 32 L31 36 M16 14 Q20 7 24 14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>'},
 ];
 var activeCat = null;
 var CAT_DESCS = {Speed:'Rapid-fire drills for processing speed',Memory:'Train recall and visual memory',Logic:'Patterns, estimation, and reasoning'};
@@ -572,6 +613,7 @@ function renderModes(){
 
 function renderHome(){
   updateStreak();
+  ['Speed','Memory','Logic','Code','Quran'].forEach(function(c){ var el=document.getElementById('catCount-'+c); if(el) el.textContent=MODES.filter(function(m){return m.cat===c;}).length+' games'; });
   document.getElementById('streakCount').textContent = stats.streak||0;
   document.getElementById('totalSessions').textContent = stats.sessions||0;
   document.getElementById('totalCorrect').textContent = stats.correct||0;
@@ -588,7 +630,7 @@ function renderHome(){
 // ── Mode start ──
 function startMode(mode){
   currentMode=mode;
-  const titles={math:'Math Sprint',memory:'Number Memory',patterns:'Number Patterns',chains:'Mental Chains',rapid:'Rapid Comparison',fermi:'Fermi Estimation',operator:'Operator Hunt',truefalse:'True or False',gridmem:'Grid Memory',flashnum:'Flash Number',bigo:'Big O Snap',output:'Output Prediction',ayahmatch:'Ayah Translation',fillgap:'Fill the Gap',surahid:'Surah Identifier',letterflash:'Letter Flash',worddecode:'Word Decode',wordflash:'Common Word Flash',positiontr:'Position Trainer',dualstream:'Dual Stream',chunking:'Chunking Trainer',codehead:'Code in Your Head',calibrate:'Confidence Calibration'};
+  const titles={math:'Math Sprint',memory:'Number Memory',patterns:'Number Patterns',chains:'Mental Chains',rapid:'Rapid Comparison',fermi:'Fermi Estimation',operator:'Operator Hunt',truefalse:'True or False',gridmem:'Grid Memory',flashnum:'Flash Number',bigo:'Big O Snap',output:'Output Prediction',ayahmatch:'Ayah Translation',fillgap:'Fill the Gap',surahid:'Surah Identifier',letterflash:'Letter Flash',worddecode:'Word Decode',wordflash:'Common Word Flash',positiontr:'Position Trainer',dualstream:'Dual Stream',chunking:'Chunking Trainer',codehead:'Code in Your Head',calibrate:'Confidence Calibration',percent:'Percentage Snap',mult:'Multiplication Tables',estsum:'Estimate the Sum',wordpairs:'Word Pairs',oddone:'Odd One Out',spotbug:'Spot the Bug'};
   document.getElementById('gameTitle').textContent=titles[mode];
   show('gameScreen');
   countdown(()=>initMode(mode));
@@ -646,6 +688,12 @@ function initMode(mode){
   else if(mode==='chunking') initChunking();
   else if(mode==='codehead') initCodeHead();
   else if(mode==='calibrate') initCalibrate();
+  else if(mode==='percent') initPercent();
+  else if(mode==='mult') initMult();
+  else if(mode==='estsum') initEstSum();
+  else if(mode==='wordpairs') initWordPairs();
+  else if(mode==='oddone') initOdd();
+  else if(mode==='spotbug') initBug();
 }
 
 function initMath(){
@@ -2662,6 +2710,291 @@ function endCalibrate(){
   }
 }
 
+// ══════════════════════════════
+// NEW GAMES: Percentage Snap, Multiplication Tables, Estimate the Sum,
+//            Word Pairs, Odd One Out, Spot the Bug
+// ══════════════════════════════
+function shuf(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function inGame(id){ return currentMode===id && document.getElementById('gameScreen').classList.contains('active'); }
+if(!stats.weak) stats.weak={};
+if(!stats.weak.mult) stats.weak.mult={};
+var ttTimer=null, tt={}, esTimer=null, wpTimer=null;
+function stopNewGameTimers(){ clearInterval(ttTimer); clearTimeout(esTimer); clearInterval(wpTimer); }
+
+// ── generic 60-second typed-answer engine (Percentage Snap, Multiplication Tables) ──
+function ttStart(cfg){
+  stopNewGameTimers();
+  tt={cfg:cfg,left:cfg.dur,cur:null};
+  setScore(0); setProgress(0,1);
+  ttNext();
+  ttTimer=setInterval(function(){
+    tt.left--;
+    var txt=document.getElementById('ttText'), arc=document.getElementById('ttArc');
+    if(txt) txt.textContent=tt.left;
+    if(arc){ arc.style.strokeDashoffset=2*Math.PI*34*(1-tt.left/tt.cfg.dur); arc.style.stroke=tt.left<=10?'var(--red)':tt.left<=20?'var(--yellow)':'var(--text)'; }
+    setProgress(tt.cfg.dur-tt.left,tt.cfg.dur);
+    if(tt.left<=0){ clearInterval(ttTimer); ttEnd(); }
+  },1000);
+}
+function ttNext(){
+  tt.cur=tt.cfg.gen();
+  var circ=2*Math.PI*34;
+  document.getElementById('gameArea').innerHTML=
+    '<div class="timer-ring-wrap"><svg class="timer-svg" viewBox="0 0 80 80"><circle class="timer-bg" cx="40" cy="40" r="34"/>'+
+    '<circle class="timer-arc" id="ttArc" cx="40" cy="40" r="34" style="stroke:var(--text)" stroke-dasharray="'+circ+'" stroke-dashoffset="'+(circ*(1-tt.left/tt.cfg.dur))+'"/></svg>'+
+    '<div class="timer-text" id="ttText">'+tt.left+'</div></div>'+
+    '<div class="question-card"><div class="q-label">'+tt.cfg.label+'</div><div class="q-problem">'+tt.cur.text+'</div></div>'+
+    '<input class="answer-input" id="ttInput" type="number" inputmode="numeric" placeholder="Your answer" autocomplete="off"/>'+
+    '<div id="ttFb" style="height:36px"></div>'+
+    '<button class="submit-btn" onclick="ttCheck()">Submit</button>';
+  var inp=document.getElementById('ttInput'); inp.focus();
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') ttCheck(); });
+}
+function ttCheck(){
+  var inp=document.getElementById('ttInput'); if(!inp||inp.readOnly) return;
+  var v=parseInt(inp.value,10); if(isNaN(v)) return;
+  session.attempts++;
+  var fb=document.getElementById('ttFb');
+  if(v===tt.cur.ans){
+    session.correct++; setScore(session.correct);
+    if(tt.cfg.onRight) tt.cfg.onRight(tt.cur);
+    inp.classList.add('correct'); inp.readOnly=true;
+    fb.innerHTML='<div class="feedback-chip correct">✓ Correct! +1</div>';
+    setTimeout(function(){ if(tt.left>0 && inGame(currentMode)) ttNext(); },350);
+  } else {
+    if(tt.cfg.onWrong) tt.cfg.onWrong(tt.cur);
+    inp.classList.add('wrong');
+    fb.innerHTML='<div class="feedback-chip wrong">✗ Answer was '+tt.cur.ans+'</div>';
+    setTimeout(function(){ inp.classList.remove('wrong'); inp.value=''; inp.focus(); },700);
+  }
+}
+function ttEnd(){
+  var elapsed=Math.round((Date.now()-session.startTime)/1000);
+  finishSession(session.correct,session.attempts,elapsed,session.correct);
+  if(tt.cfg.after) tt.cfg.after();
+}
+
+// ── Percentage Snap ──
+function genPct(){
+  var p=pick([5,10,15,20,25,30,40,50,60,75,80,90]), n=20*randInt(1,25), part=p*n/100, t=Math.random();
+  if(t<.6) return {text:p+'% of '+n+' = ?',ans:part};
+  if(t<.8) return {text:n+' + '+p+'% = ?',ans:n+part};
+  return {text:n+' − '+p+'% = ?',ans:n-part};
+}
+function initPercent(){ ttStart({label:'Percentages · 60 seconds',dur:60,gen:genPct}); }
+
+// ── Multiplication Tables (weights questions toward facts you miss) ──
+function genMult(){
+  var facts=[], total=0, a, b;
+  for(a=2;a<=12;a++) for(b=a;b<=12;b++){ var w=1+4*Math.min(5,stats.weak.mult[a+'x'+b]||0); facts.push([a,b,w]); total+=w; }
+  var r=Math.random()*total, f=facts[0];
+  for(var i=0;i<facts.length;i++){ r-=facts[i][2]; if(r<=0){ f=facts[i]; break; } }
+  var x=f[0], y=f[1]; if(Math.random()<.5){ x=f[1]; y=f[0]; }
+  return {text:x+' × '+y+' = ?',ans:f[0]*f[1],key:f[0]+'x'+f[1]};
+}
+function initMult(){
+  ttStart({label:'Times tables · 60 seconds',dur:60,gen:genMult,
+    onWrong:function(c){ if(!c.missed){ c.missed=true; stats.weak.mult[c.key]=(stats.weak.mult[c.key]||0)+1; saveStats(); } },
+    onRight:function(c){ if(!c.missed && stats.weak.mult[c.key]){ stats.weak.mult[c.key]--; if(stats.weak.mult[c.key]<=0) delete stats.weak.mult[c.key]; saveStats(); } },
+    after:function(){
+      var top=Object.keys(stats.weak.mult).sort(function(a,b){ return stats.weak.mult[b]-stats.weak.mult[a]; }).slice(0,4);
+      var card=document.querySelector('.results-card');
+      if(card && top.length) card.insertAdjacentHTML('beforeend','<div style="margin-top:18px;text-align:left"><div style="font-size:12px;font-weight:500;color:var(--text3);margin-bottom:8px">Your toughest facts (shown more often)</div><div style="display:flex;gap:8px;flex-wrap:wrap">'+top.map(function(k){ var p=k.split('x'); return '<span class="mode-best">'+p[0]+' × '+p[1]+'</span>'; }).join('')+'</div></div>');
+    }});
+}
+
+// ── Estimate the Sum ──
+var esQ=0, esTotal=10, es={};
+function initEstSum(){ stopNewGameTimers(); esQ=0; setScore(0); setProgress(0,esTotal); nextEst(); }
+function nextEst(){
+  if(esQ>=esTotal){ endEst(); return; }
+  var cnt=esQ<4?4:esQ<8?5:6, nums=[], i, S=0, lo=esQ<5?11:101, hi=esQ<5?99:899;
+  for(i=0;i<cnt;i++){ var n=randInt(lo,hi); nums.push(n); S+=n; }
+  var ans=Math.round(S*(1+(Math.random()-.5)*.06)/10)*10, opts=[ans], tries=0;
+  var facs=shuf([.6,.78,1.22,1.4,1.55]);
+  for(i=0;i<facs.length && opts.length<4;i++){ var d=Math.round(S*facs[i]/10)*10; if(opts.indexOf(d)<0) opts.push(d); }
+  es={nums:nums,S:S,ans:ans,opts:shuf(opts)};
+  var ms=2200+cnt*450;
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">'+(esQ+1)+' / '+esTotal+'</div>'+
+    '<div class="question-card"><div class="q-label">Estimate the total — numbers vanish soon</div>'+
+    '<div class="est-col">'+nums.map(function(n){ return '<div>'+n+'</div>'; }).join('')+'</div>'+
+    '<div class="est-bar"><i id="estBar" style="transition-duration:'+ms+'ms"></i></div></div>';
+  setTimeout(function(){ var b=document.getElementById('estBar'); if(b) b.style.width='0%'; },30);
+  esTimer=setTimeout(function(){ if(inGame('estsum')) renderEstOptions(); },ms);
+}
+function renderEstOptions(){
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">'+(esQ+1)+' / '+esTotal+'</div>'+
+    '<div class="question-card"><div class="q-label">Which total is closest?</div><div class="q-problem" style="font-size:44px">≈ ?</div></div>'+
+    '<div class="options-grid">'+es.opts.map(function(o){ return '<button class="option-btn" data-v="'+o+'" onclick="checkEst('+o+',this)">'+o+'</button>'; }).join('')+'</div>'+
+    '<div id="estFb" style="height:36px;display:flex;align-items:center;justify-content:center"></div>';
+}
+function checkEst(v,btn){
+  document.querySelectorAll('.option-btn').forEach(function(b){ b.disabled=true; });
+  session.attempts++; esQ++;
+  var ok=v===es.ans, fb=document.getElementById('estFb');
+  if(ok){ session.correct++; setScore(session.correct); btn.classList.add('correct'); fb.innerHTML='<div class="feedback-chip correct">✓ Exact sum was '+es.S+'</div>'; }
+  else { btn.classList.add('wrong'); document.querySelectorAll('.option-btn').forEach(function(b){ if(+b.dataset.v===es.ans) b.classList.add('correct'); }); fb.innerHTML='<div class="feedback-chip wrong">✗ Exact sum was '+es.S+'</div>'; }
+  setProgress(esQ,esTotal);
+  esTimer=setTimeout(function(){ if(inGame('estsum')) nextEst(); },1100);
+}
+function endEst(){ var elapsed=Math.round((Date.now()-session.startTime)/1000); finishSession(session.correct,session.attempts,elapsed,session.correct); }
+
+// ── Word Pairs ──
+var WP_WORDS=['lamp','river','chair','cloud','bread','tiger','mirror','candle','garden','pencil','bridge','coffee','window','rocket','jacket','island','guitar','pillow','castle','orange','silver','thunder','market','ladder','button','forest','camera','violin','pepper','anchor','blanket','hammer','feather','compass','lantern','pocket','saddle','tunnel','whistle','marble','basket','ribbon','engine','mango','wallet','pirate','cactus','helmet','kettle','drum'];
+var WP_SIZES=[3,3,4,4,5];
+var wpRound=0, wpPairs=[], wpQs=[], wpQi=0;
+function initWordPairs(){ stopNewGameTimers(); wpRound=0; setScore(0); setProgress(0,WP_SIZES.length); wpStudy(); }
+function wpStudy(){
+  if(wpRound>=WP_SIZES.length){ endWP(); return; }
+  var n=WP_SIZES[wpRound], w=shuf(WP_WORDS).slice(0,n*2), i;
+  wpPairs=[]; for(i=0;i<n;i++) wpPairs.push([w[2*i],w[2*i+1]]);
+  var left=3+2*n;
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">Round '+(wpRound+1)+' / '+WP_SIZES.length+'</div>'+
+    '<div class="question-card"><div class="q-label">Memorize these pairs</div><div class="wp-list">'+
+    wpPairs.map(function(p){ return '<div class="wp-pair"><span>'+p[0]+'</span><span class="dash">—</span><span>'+p[1]+'</span></div>'; }).join('')+
+    '</div><div class="q-sub" style="font-size:13px;color:var(--text3)">Hides in <span id="wpCd">'+left+'</span>s</div></div>'+
+    '<button class="submit-btn" onclick="wpQuiz()">I\'m ready</button>';
+  clearInterval(wpTimer);
+  wpTimer=setInterval(function(){ left--; var el=document.getElementById('wpCd'); if(el) el.textContent=left; if(left<=0){ clearInterval(wpTimer); if(inGame('wordpairs')) wpQuiz(); } },1000);
+}
+function wpQuiz(){
+  clearInterval(wpTimer);
+  if(!inGame('wordpairs')||!wpPairs.length) return;
+  wpQs=shuf(wpPairs.map(function(p){ return Math.random()<.5?{ask:p[0],ans:p[1]}:{ask:p[1],ans:p[0]}; })); wpQi=0;
+  wpAsk();
+}
+function wpAsk(){
+  var q=wpQs[wpQi], all=[].concat.apply([],wpPairs);
+  var others=shuf(all.filter(function(x){ return x!==q.ask && x!==q.ans; })).slice(0,3);
+  var opts=shuf([q.ans].concat(others));
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">Round '+(wpRound+1)+' · '+(wpQi+1)+' / '+wpQs.length+'</div>'+
+    '<div class="question-card"><div class="q-label">Which word was paired with…</div><div class="q-problem" style="font-size:52px">'+q.ask+'</div></div>'+
+    '<div class="options-grid">'+opts.map(function(o){ return '<button class="option-btn" style="font-size:20px" onclick="wpCheck(\''+o+'\',this)">'+o+'</button>'; }).join('')+'</div>'+
+    '<div id="wpFb" style="height:36px;display:flex;align-items:center;justify-content:center"></div>';
+}
+function wpCheck(o,btn){
+  document.querySelectorAll('.option-btn').forEach(function(b){ b.disabled=true; });
+  var q=wpQs[wpQi], fb=document.getElementById('wpFb'); session.attempts++;
+  if(o===q.ans){ session.correct++; setScore(session.correct); btn.classList.add('correct'); fb.innerHTML='<div class="feedback-chip correct">✓ Correct!</div>'; }
+  else { btn.classList.add('wrong'); document.querySelectorAll('.option-btn').forEach(function(b){ if(b.textContent===q.ans) b.classList.add('correct'); }); fb.innerHTML='<div class="feedback-chip wrong">✗ It was '+q.ans+'</div>'; }
+  setTimeout(function(){
+    if(!inGame('wordpairs')) return;
+    wpQi++;
+    if(wpQi<wpQs.length) wpAsk(); else { wpRound++; setProgress(wpRound,WP_SIZES.length); wpStudy(); }
+  },850);
+}
+function endWP(){ var elapsed=Math.round((Date.now()-session.startTime)/1000); finishSession(session.correct,session.attempts,elapsed,session.correct); }
+
+// ── Odd One Out ──
+var OO_CATS=[
+  {n:'animals',w:['dog','cat','horse','sheep','goat','rabbit','camel','tiger']},
+  {n:'fruits',w:['apple','mango','grape','lemon','peach','melon','banana','cherry']},
+  {n:'colours',w:['crimson','teal','amber','violet','indigo','maroon','scarlet','olive']},
+  {n:'countries',w:['Egypt','Japan','Brazil','Kenya','Norway','Chile','India','Spain']},
+  {n:'tools',w:['hammer','wrench','chisel','pliers','saw','drill','spanner','mallet']},
+  {n:'planets',w:['Mars','Venus','Saturn','Jupiter','Mercury','Neptune','Uranus','Earth']},
+  {n:'programming languages',w:['Python','Rust','Kotlin','Perl','Haskell','Scala','Swift','Lua']},
+  {n:'metals',w:['iron','copper','zinc','tin','gold','silver','nickel','cobalt']},
+  {n:'instruments',w:['piano','violin','flute','guitar','cello','harp','trumpet','oboe']}
+];
+var OO_PRIMES=[11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97];
+var OO_COMP=[21,27,33,39,49,51,57,63,69,77,81,87,91,93,99];
+var OO_SQ=[16,25,36,49,64,81,100,121,144,169,196], OO_NSQ=[18,27,40,50,70,90,110,130,150];
+function genOdd(){
+  var group, odd, why, t=Math.random();
+  if(t<.45){
+    var cats=shuf(OO_CATS), a=cats[0], b=cats[1];
+    group=shuf(a.w).slice(0,5); odd=pick(b.w); why='The others are all '+a.n+'.';
+  } else {
+    var kind=pick(['parity','multiples','primes','squares']), i;
+    if(kind==='parity'){
+      var ev=Math.random()<.5; var pool=[]; for(i=10;i<=98;i++) if((i%2===0)===ev) pool.push(i);
+      group=shuf(pool).slice(0,5); odd=(function(){ var o; do{ o=randInt(10,98); }while((o%2===0)===ev); return o; })();
+      why='The others are all '+(ev?'even':'odd')+'.';
+    } else if(kind==='multiples'){
+      var k=pick([3,4,6,7,9,11]), pool2=[]; for(i=2;i*k<100;i++) pool2.push(i*k);
+      group=shuf(pool2).slice(0,5); odd=(function(){ var o; do{ o=pick(pool2)+pick([-1,1]); }while(o%k===0||o<10); return o; })();
+      why='The others are all multiples of '+k+'.';
+    } else if(kind==='primes'){ group=shuf(OO_PRIMES).slice(0,5); odd=pick(OO_COMP); why='The others are all prime.'; }
+    else { group=shuf(OO_SQ).slice(0,5); odd=pick(OO_NSQ); why='The others are all perfect squares.'; }
+  }
+  var items=shuf(group.concat([odd]));
+  return {items:items.map(String),odd:items.indexOf(odd),why:why};
+}
+var ooQ=0, ooTotal=12, ooCur={};
+function initOdd(){ stopNewGameTimers(); ooQ=0; setScore(0); setProgress(0,ooTotal); nextOdd(); }
+function nextOdd(){
+  if(ooQ>=ooTotal){ endOdd(); return; }
+  ooCur=genOdd();
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">'+(ooQ+1)+' / '+ooTotal+'</div>'+
+    '<div class="question-card"><div class="q-label">Which one doesn\'t belong?</div></div>'+
+    '<div class="oo-grid">'+ooCur.items.map(function(it,i){ return '<button class="oo-tile" onclick="checkOdd('+i+',this)">'+escHtml(it)+'</button>'; }).join('')+'</div>'+
+    '<div id="ooFb" style="min-height:36px;display:flex;align-items:center;justify-content:center"></div>';
+}
+function checkOdd(i,btn){
+  var tiles=document.querySelectorAll('.oo-tile'); tiles.forEach(function(b){ b.disabled=true; });
+  session.attempts++; ooQ++;
+  var fb=document.getElementById('ooFb');
+  tiles[ooCur.odd].classList.add('correct');
+  if(i===ooCur.odd){ session.correct++; setScore(session.correct); fb.innerHTML='<div class="feedback-chip correct">✓ '+ooCur.why+'</div>'; }
+  else { btn.classList.add('wrong'); fb.innerHTML='<div class="feedback-chip wrong">✗ '+ooCur.why+'</div>'; }
+  setProgress(ooQ,ooTotal);
+  setTimeout(function(){ if(inGame('oddone')) nextOdd(); },1500);
+}
+function endOdd(){ var elapsed=Math.round((Date.now()-session.startTime)/1000); finishSession(session.correct,session.attempts,elapsed,session.correct); }
+
+// ── Spot the Bug ──
+var BUGS=[
+  {lang:'Python',code:'def count_evens(nums):\n    count = 0\n    for i in range(1, len(nums)):\n        if nums[i] % 2 == 0:\n            count += 1\n    return count',bug:2,why:'range(1, …) starts at index 1, so the first element is never checked. It should be range(len(nums)).'},
+  {lang:'Python',code:'def add_item(item, items=[]):\n    items.append(item)\n    return items',bug:0,why:'The default list is created once and shared by every call, so items pile up between calls. Use None as the default.'},
+  {lang:'JavaScript',code:'function isAdult(age) {\n  if (age = 18) {\n    return true;\n  }\n  return false;\n}',bug:1,why:'A single = assigns 18 to age instead of comparing. It should be age >= 18.'},
+  {lang:'Python',code:'def find(arr, x):\n    lo, hi = 0, len(arr) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if arr[mid] < x:\n            lo = mid\n        elif arr[mid] > x:\n            hi = mid - 1\n        else:\n            return mid\n    return -1',bug:5,why:'lo = mid can loop forever when lo and mid are equal. It must be lo = mid + 1.'},
+  {lang:'JavaScript',code:'const arr = [1, 2, 3, 4];\nlet sum = 0;\nfor (let i = 0; i <= arr.length; i++) {\n  sum += arr[i];\n}',bug:2,why:'i <= arr.length runs one step too far; arr[4] is undefined, so sum becomes NaN. Use i < arr.length.'},
+  {lang:'Python',code:'def is_palindrome(s):\n    s = s.lower()\n    return s == s.reverse()',bug:2,why:'Strings have no .reverse() method. Use s[::-1] to reverse a string.'},
+  {lang:'Python',code:'def get_user(db, name):\n    q = "SELECT * FROM users WHERE name = \'" + name + "\'"\n    return db.execute(q)',bug:1,why:'User input is concatenated into the SQL string, which allows SQL injection. Use a parameterized query.'},
+  {lang:'JavaScript',code:'async function load(id) {\n  const res = fetch(\'/api/items/\' + id);\n  const data = await res.json();\n  return data;\n}',bug:1,why:'fetch() returns a promise, so res is a Promise, not a Response. It needs await fetch(…).'},
+  {lang:'Python',code:'def percent(part, whole):\n    if whole == 0:\n        return 0\n    return part // whole * 100',bug:3,why:'// is floor division, so part // whole is 0 for any part smaller than whole. Use part / whole * 100.'},
+  {lang:'JavaScript',code:'for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 0);\n}',bug:0,why:'var is function-scoped, so every callback sees the final i and prints 3, 3, 3. Use let.'},
+  {lang:'Python',code:'def remove_negatives(nums):\n    for n in nums:\n        if n < 0:\n            nums.remove(n)\n    return nums',bug:3,why:'Removing items from a list while looping over it skips elements. Build a new list instead.'},
+  {lang:'JavaScript',code:'function totalIsRight(a, b) {\n  return a + b === 0.3;\n}\n// totalIsRight(0.1, 0.2)',bug:1,why:'Floating-point math makes 0.1 + 0.2 equal 0.30000000000000004, so === 0.3 is false. Compare with a small tolerance.'},
+  {lang:'Python',code:'def fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 1)',bug:3,why:'The second call should be fib(n - 2). As written it computes 2^n and returns the wrong values.'},
+  {lang:'JavaScript',code:'const user = { name: \'Sam\', tags: [] };\nconst copy = user;\ncopy.tags.push(\'admin\');\n// user must stay unchanged',bug:1,why:'This does not copy anything; both names point to the same object. Use structuredClone(user) or a spread copy.'},
+  {lang:'Python',code:'import hashlib\ndef store_password(pw):\n    return hashlib.md5(pw.encode()).hexdigest()',bug:2,why:'MD5 is fast and unsalted, so it is a poor choice for passwords. Use a slow password hash such as bcrypt or argon2.'},
+  {lang:'JavaScript',code:'const price = \'10\';\nconst qty = 5;\nconst total = price + qty;\nconsole.log(total);',bug:2,why:'\'10\' + 5 concatenates to the string "105". Convert first, for example Number(price) + qty.'}
+];
+var bugQ=0, bugTotal=10, bugOrder=[], bugCur=null, bugDone=false;
+function initBug(){ stopNewGameTimers(); bugQ=0; bugOrder=shuf(BUGS.map(function(_,i){ return i; })); setScore(0); setProgress(0,bugTotal); nextBug(); }
+function nextBug(){
+  if(bugQ>=bugTotal){ endBug(); return; }
+  bugCur=BUGS[bugOrder[bugQ]]; bugDone=false;
+  var lines=bugCur.code.split('\n');
+  document.getElementById('gameArea').innerHTML=
+    '<div style="font-size:13px;color:var(--text3);font-weight:500">'+(bugQ+1)+' / '+bugTotal+' · '+bugCur.lang+'</div>'+
+    '<div class="question-card" style="padding:28px 20px"><div class="q-label">Tap the line with the bug</div>'+
+    '<div class="bug-code">'+lines.map(function(l,i){ return '<button class="bug-line" onclick="checkBug('+i+')"><span class="n">'+(i+1)+'</span><span>'+(escHtml(l)||' ')+'</span></button>'; }).join('')+'</div></div>'+
+    '<div id="bugFb" style="width:100%"></div>';
+}
+function checkBug(i){
+  if(bugDone) return; bugDone=true;
+  var rows=document.querySelectorAll('.bug-line'); rows.forEach(function(r){ r.disabled=true; });
+  session.attempts++; bugQ++;
+  rows[bugCur.bug].classList.add('ok');
+  var ok=i===bugCur.bug;
+  if(ok){ session.correct++; setScore(session.correct); } else rows[i].classList.add('bad');
+  setProgress(bugQ,bugTotal);
+  document.getElementById('bugFb').innerHTML=
+    '<div class="feedback-chip '+(ok?'correct':'wrong')+'" style="display:inline-block;margin-bottom:10px">'+(ok?'✓ Found it':'✗ The bug is on line '+(bugCur.bug+1))+'</div>'+
+    '<div class="bug-why">'+escHtml(bugCur.why)+'</div>'+
+    '<button class="submit-btn" style="margin-top:14px" onclick="nextBug()">'+(bugQ>=bugTotal?'Finish':'Next →')+'</button>';
+}
+function endBug(){ var elapsed=Math.round((Date.now()-session.startTime)/1000); finishSession(session.correct,session.attempts,elapsed,session.correct); }
+
 // ── Finish ──
 function finishSession(correct,attempts,elapsed,score){
   clearInterval(mathTimer);
@@ -2675,8 +3008,8 @@ function finishSession(correct,attempts,elapsed,score){
   saveStats();
 
   const acc=attempts?Math.round(correct/attempts*100):0;
-  const titles={math:'Sprint complete!',memory:'Memory done!',patterns:'Pattern master!',chains:'Chain broken!',rapid:'Lightning fast!',fermi:'Estimation done!',operator:'Hunt complete!',truefalse:'Quick thinker!',gridmem:'Grid cleared!',flashnum:'Sharp eyes!',bigo:'Complexity mastered!',output:'Code reader!',ayahmatch:'MashaAllah!',fillgap:'Well memorized!',surahid:'Surah scholar!',letterflash:'Sharp reader!',worddecode:'Well decoded!',wordflash:'Word master!',positiontr:'Form master!',dualstream:'Dual tracked!',chunking:'Well chunked!',codehead:'Mental compiler!',calibrate:'Well calibrated!'};
-  const emojis={math:'⚡',memory:'🧩',patterns:'🔢',chains:'🔗',rapid:'👁️',fermi:'🎯',operator:'🔍',truefalse:'✅',gridmem:'🟦',flashnum:'💡',bigo:'📊',output:'💻',ayahmatch:'📖',fillgap:'✨',surahid:'🕌'};
+  const titles={math:'Sprint complete!',memory:'Memory done!',patterns:'Pattern master!',chains:'Chain broken!',rapid:'Lightning fast!',fermi:'Estimation done!',operator:'Hunt complete!',truefalse:'Quick thinker!',gridmem:'Grid cleared!',flashnum:'Sharp eyes!',bigo:'Complexity mastered!',output:'Code reader!',ayahmatch:'MashaAllah!',fillgap:'Well memorized!',surahid:'Surah scholar!',letterflash:'Sharp reader!',worddecode:'Well decoded!',wordflash:'Word master!',positiontr:'Form master!',dualstream:'Dual tracked!',chunking:'Well chunked!',codehead:'Mental compiler!',calibrate:'Well calibrated!',percent:'Percent pro!',mult:'Tables mastered!',estsum:'Sharp estimator!',wordpairs:'Pairs locked in!',oddone:'Keen eye!',spotbug:'Bug hunter!'};
+  const emojis={math:'⚡',memory:'🧩',patterns:'🔢',chains:'🔗',rapid:'👁️',fermi:'🎯',operator:'🔍',truefalse:'✅',gridmem:'🟦',flashnum:'💡',bigo:'📊',output:'💻',ayahmatch:'📖',fillgap:'✨',surahid:'🕌',percent:'％',mult:'✖️',estsum:'🎯',wordpairs:'🔗',oddone:'🧐',spotbug:'🐛'};
   document.getElementById('resultsEmoji').textContent=emojis[currentMode];
   document.getElementById('resultsTitle').textContent=titles[currentMode];
   document.getElementById('resultsSub').textContent=`${correct} correct out of ${attempts} attempts`;
