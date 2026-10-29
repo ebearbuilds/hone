@@ -4,10 +4,11 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Hone</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0a'/><text y='22' x='7' font-size='17' font-weight='700' fill='white' font-family='serif'>H</text></svg>"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' gradientUnits='userSpaceOnUse' x1='7' y1='6' x2='25' y2='26'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.6' stop-color='%23c4b5fd'/%3E%3Cstop offset='1' stop-color='%23818cf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.75' y='.75' width='30.5' height='30.5' rx='7.5' fill='%23000' stroke='%232e2e33' stroke-width='1.5'/%3E%3Cpath d='M9 6.5v19M9 16c0-4 2.500-6 6-6s6 2 6 6v9.500' fill='none' stroke='url(%23g)' stroke-width='3.600' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+<script>try{if((localStorage.getItem('hone_theme')||'dark')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
 :root{
@@ -166,23 +167,161 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .q-arabic{font-size:26px;line-height:1.8;direction:rtl;font-family:'Scheherazade New',serif;color:var(--text);margin-bottom:8px}
 .q-arabic-lg{font-size:30px}
 .q-ref{font-size:12px;color:var(--text3);font-weight:500;margin-top:6px}
+
+/* ═══ MENO-STYLE THEME (black / white, Inter, big type, soft gradients) ═══
+   Everything below overrides the original look. Delete this block (and the theme button/JS) to get the old UI back. */
+:root{
+  --font:'Inter',-apple-system,system-ui,sans-serif;--sans:var(--font);--serif:var(--font);
+  --bg:#ffffff;--bg2:#f5f5f5;--card:#ffffff;--fill:#f0f0f0;--fill-hover:#e4e4e4;
+  --border:#e6e6e6;--border2:#cfcfcf;--text:#000;--text2:#6a6a6a;--text3:#9a9a9a;--white:#fff;--amber:#d97706;--amber-bg:#fef3c7;
+  --r:16px;--r-sm:12px;--r-lg:22px;--r-xl:28px;
+  --shadow:none;--shadow-card:0 10px 30px -14px rgba(120,130,255,.35);
+  --glow-a:rgba(120,130,255,.14);--glow-b:rgba(80,210,170,.12);
+}
+:root.dark{
+  --bg:#000;--bg2:#181818;--card:#121212;--fill:#1c1c1c;--fill-hover:#2a2a2a;
+  --border:#262626;--border2:#454545;--text:#fff;--text2:#a8a8a8;--text3:#6d6d6d;--white:#000;--amber:#fbbf24;--amber-bg:rgba(251,191,36,.16);
+  --green:#4ade80;--green-dark:#6ee7a0;--green-light:rgba(34,197,94,.16);
+  --red:#f87171;--red-light:rgba(239,68,68,.16);
+  --blue:#6ea8ff;--blue-dark:#8db4ff;--blue-light:rgba(80,130,255,.2);
+  --purple-light:rgba(139,92,246,.18);--yellow-light:rgba(234,179,8,.15);--orange-light:#1c1c1c;
+  --shadow-card:0 10px 30px -14px rgba(130,140,255,.5);
+  --glow-a:rgba(110,120,255,.26);--glow-b:rgba(60,220,170,.18);
+}
+html{background:var(--bg)}
+body{font-family:var(--font);letter-spacing:-.01em;font-size:15px;background:radial-gradient(900px 520px at 88% -8%,var(--glow-a),transparent 62%),radial-gradient(760px 520px at -4% 108%,var(--glow-b),transparent 62%),var(--bg) fixed;color:var(--text)}
+#homeScreen,#gameScreen,#resultsScreen{background:transparent}
+
+/* header */
+.home-header{height:72px;padding:0 26px;border-bottom:0;background:transparent;max-width:1180px;width:100%;margin:0 auto}
+.logo-icon{display:none}
+.logo-name{font-size:26px;font-weight:500;letter-spacing:-.045em;text-transform:lowercase}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.streak-badge{background:var(--fill);border:0;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:500;color:var(--text)}
+.theme-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--fill);color:var(--text);cursor:pointer;font-size:16px;transition:background .12s}
+.theme-btn:hover{background:var(--fill-hover)}
+
+/* hero */
+.home-hero,.stats-strip,.cat-cards,.cat-screen-header,.modes-grid{max-width:1180px;width:100%;margin-left:auto;margin-right:auto}
+.home-hero{text-align:left;padding:44px 26px 26px}
+.hero-doodles{display:none}
+.home-hero h1{font-size:76px;font-weight:500;letter-spacing:-.055em;line-height:1.02;margin-bottom:18px}
+.home-hero h1 em{font-style:normal;background:linear-gradient(90deg,#9fe0ff,#c8b8ff 50%,#ffc2d9);-webkit-background-clip:text;background-clip:text;color:transparent}
+:root:not(.dark) .home-hero h1 em{background-image:linear-gradient(90deg,#4aa8e8,#8b6cf0 50%,#e0589a)}
+.home-hero p{margin:0;max-width:460px;font-size:17px;color:var(--text2);line-height:1.55}
+
+/* stats */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:6px 26px 30px;justify-content:stretch}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px;text-align:left;box-shadow:none;min-width:0}
+.stat-pill .val{font-size:34px;font-weight:500;letter-spacing:-.04em}
+.stat-pill .lbl{font-size:12px;font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--text3);margin-top:8px}
+
+/* category cards */
+.cat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:0 26px 56px}
+.cat-card{flex-direction:column;align-items:stretch;gap:0;padding:0;background:transparent;border:0;box-shadow:none;border-radius:var(--r-lg);overflow:visible}
+.cat-card:hover{transform:none;box-shadow:none}
+.cat-icon{width:100%;height:170px;border-radius:var(--r-lg);font-size:56px;margin-bottom:14px;transition:box-shadow .3s,transform .3s;background:var(--fill)}
+.cat-card:hover .cat-icon{box-shadow:0 18px 50px -12px var(--shadow-glow,rgba(140,150,255,.5));transform:translateY(-2px)}
+.cat-info{flex:none;display:block}
+.cat-name{font-size:20px;font-weight:500;letter-spacing:-.03em;margin-bottom:5px}
+.cat-desc{font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:12px}
+.cat-count{align-self:flex-start;background:var(--fill);border:0;color:var(--text2);font-weight:500;padding:5px 13px;order:3;margin-top:2px}
+.cat-arrow{display:none}
+.answer-input::-webkit-outer-spin-button,.answer-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.answer-input[type=number]{-moz-appearance:textfield}
+.cat-card:nth-child(1) .cat-icon{background:radial-gradient(at 18% 22%,#ffd89a,transparent 62%),radial-gradient(at 82% 28%,#ff9ec0,transparent 60%),radial-gradient(at 50% 95%,#ffb38a,transparent 60%),#ffc2a0 !important}
+.cat-card:nth-child(2) .cat-icon{background:radial-gradient(at 18% 22%,#9fd8ff,transparent 62%),radial-gradient(at 82% 28%,#b9a6ff,transparent 60%),radial-gradient(at 50% 95%,#7fe0d0,transparent 60%),#a9c4ff !important}
+.cat-card:nth-child(3) .cat-icon{background:radial-gradient(at 18% 22%,#b6f0c0,transparent 62%),radial-gradient(at 82% 28%,#9fe0ff,transparent 60%),radial-gradient(at 50% 95%,#e8f59a,transparent 60%),#a8e8c8 !important}
+.cat-card:nth-child(4) .cat-icon{background:radial-gradient(at 18% 22%,#d2b6ff,transparent 62%),radial-gradient(at 82% 28%,#ff9ed2,transparent 60%),radial-gradient(at 50% 95%,#9fb4ff,transparent 60%),#c8aaff !important}
+.cat-card:nth-child(5) .cat-icon{background:radial-gradient(at 18% 22%,#8fe8d0,transparent 62%),radial-gradient(at 82% 28%,#b8e87a,transparent 60%),radial-gradient(at 50% 95%,#7fc8ff,transparent 60%),#98e8d0 !important}
+
+/* category screen */
+.cat-screen-header{padding:10px 26px 22px;gap:16px}
+.cat-screen-title{font-size:46px;font-weight:500;letter-spacing:-.055em;line-height:1.05}
+.cat-screen-sub{font-size:15px;color:var(--text2)}
+.back-btn{width:42px;height:42px;border-radius:50%;border:0;background:var(--fill);color:var(--text);font-size:17px}
+.back-btn:hover{background:var(--fill-hover);color:var(--text)}
+.modes-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:0 26px 56px}
+.mode-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:26px;box-shadow:none;transition:box-shadow .2s,border-color .2s,transform .2s}
+.mode-card:hover{box-shadow:var(--shadow-card);transform:none;border-color:var(--border2)}
+.mode-card::before{display:none}
+.mode-card .doodle{width:44px;height:44px;margin-bottom:18px;color:var(--text)}
+.mode-name{font-size:21px;font-weight:500;letter-spacing:-.035em}
+.mode-desc{font-size:14px;color:var(--text2);margin-bottom:18px}
+.mode-best{background:var(--fill);border:0;color:var(--text);font-weight:500}
+.mode-card.orange .mode-best,.mode-card.green .mode-best,.mode-card.blue .mode-best,.mode-card.purple .mode-best{background:var(--fill);color:var(--text)}
+.play-btn{padding:10px 22px;border-radius:999px;font-size:14px;font-weight:500;background:var(--text);color:var(--bg)}
+.play-btn:hover{background:var(--text);opacity:.85}
+
+/* game */
+.game-topbar{height:72px;padding:0 26px;border-bottom:0;background:transparent;max-width:1180px;margin:0 auto;gap:16px}
+.game-title{font-size:17px;font-weight:500;letter-spacing:-.02em}
+.progress-bar-wrap{height:6px;background:var(--fill);border:0;border-radius:999px}
+.progress-bar-fill{background:linear-gradient(90deg,#9fe0ff,#c8b8ff,#ffc2d9);border-radius:999px}
+.game-score-badge{background:var(--fill);border:0;border-radius:999px;padding:9px 16px;font-weight:500;color:var(--text)}
+.game-area{max-width:680px;gap:20px;padding:20px 26px 40px}
+.timer-bg{stroke:var(--fill)}
+.timer-text{font-weight:500}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:48px 32px;box-shadow:none}
+.q-label{font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--text3)}
+.q-problem{font-size:72px;font-weight:500;letter-spacing:-.055em;line-height:1.05}
+.q-problem.memory-display{font-size:44px;color:var(--blue-dark)}
+.q-sub{font-size:15px}
+.answer-input{font-size:34px;font-weight:500;letter-spacing:-.03em;background:var(--card);border:1px solid var(--border2);border-radius:var(--r-lg);padding:18px 22px;color:var(--text)}
+.answer-input:focus{border-color:var(--text)}
+.answer-input.correct{border-color:var(--green);background:var(--green-light)}
+.answer-input.wrong{border-color:var(--red);background:var(--red-light)}
+.option-btn{font-size:22px;font-weight:500;letter-spacing:-.03em;border:1px solid var(--border2);background:var(--card);border-radius:var(--r-lg);padding:20px;color:var(--text)}
+.option-btn:hover:not(:disabled){background:var(--fill);border-color:var(--text);transform:none}
+.option-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark)}
+.option-btn.wrong{background:var(--red-light);border-color:var(--red);color:var(--red)}
+.submit-btn,.btn-again{border-radius:999px;padding:16px;font-size:16px;font-weight:500;background:var(--text);color:var(--bg)}
+.submit-btn:hover,.btn-again:hover{background:var(--text);opacity:.85}
+.submit-btn:disabled{background:var(--fill);color:var(--text3);opacity:1}
+.btn-home{border-radius:999px;padding:16px;font-size:16px;font-weight:500;background:var(--fill);border:0;color:var(--text)}
+.btn-home:hover{background:var(--fill-hover);color:var(--text)}
+.feedback-chip{border-radius:999px;padding:9px 20px;font-weight:500}
+.feedback-chip.correct{background:var(--green-light);color:var(--green-dark);border:0}
+.feedback-chip.wrong{background:var(--red-light);color:var(--red);border:0}
+.mem-digit{background:var(--card);border-color:var(--border2);border-radius:var(--r);font-weight:500;color:var(--text)}
+.gm-cell{background:var(--card);border-color:var(--border2);border-radius:var(--r-sm)}
+.gm-cell.lit{background:var(--text);border-color:var(--text)}
+.cat-tab{background:var(--fill);border:0;border-radius:999px;color:var(--text2);font-weight:500}
+.cat-tab.on{background:var(--text);color:var(--bg)}
+.code-block-game{background:var(--bg2);border-color:var(--border);border-radius:var(--r);font-family:'JetBrains Mono','Geist Mono',monospace}
+:root.dark .code-block-game .kw{color:#b79cff}:root.dark .code-block-game .fn{color:#8db4ff}:root.dark .code-block-game .st{color:#6ee7a0}:root.dark .code-block-game .num{color:#ffb072}
+
+/* results + countdown */
+.results-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:44px 36px;box-shadow:none;max-width:460px}
+.results-title{font-size:36px;font-weight:500;letter-spacing:-.05em}
+.results-sub{font-size:15px}
+.rs-stat{background:var(--bg2);border:0;border-radius:var(--r)}
+.rs-val{font-size:30px;font-weight:500;letter-spacing:-.04em}
+.rs-lbl{font-size:11px;font-weight:500;letter-spacing:.03em;text-transform:none}
+.pb-banner{border-radius:var(--r);border:0;background:var(--yellow-light);color:#b45309}
+:root.dark .pb-banner{color:#fcd34d}
+.countdown-overlay{background:rgba(255,255,255,.96)}
+:root.dark .countdown-overlay{background:rgba(0,0,0,.96)}
+.countdown-num{font-weight:500;letter-spacing:-.06em}
+
+@media(max-width:900px){.cat-cards{grid-template-columns:repeat(2,1fr)}.stats-strip{grid-template-columns:repeat(2,1fr)}.home-hero h1{font-size:60px}}
+@media(max-width:560px){.cat-cards{grid-template-columns:1fr}.cat-icon{height:140px}.home-hero{padding:24px 18px 18px}.home-hero h1{font-size:48px}.stats-strip,.cat-cards,.modes-grid{padding-left:18px;padding-right:18px}.home-header,.game-topbar{padding:0 18px}.q-problem{font-size:54px}.question-card{padding:36px 20px}.cat-screen-title{font-size:36px}.game-title{display:none}}
 </style>
 </head>
 <body>
 <div class="screen active" id="homeScreen">
   <div class="home-header">
     <div class="logo"><div class="logo-icon">H</div><div class="logo-name">Hone</div></div>
-    <div class="streak-badge">&#128293; <span id="streakCount">0</span> day streak</div>
+    <div class="hdr-right"><div class="streak-badge">&#128293; <span id="streakCount">0</span> day streak</div><button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Light / dark mode"></button></div>
   </div>
   <div class="home-hero">
     <div class="hero-doodles">
-      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="4 4"/><circle cx="24" cy="24" r="6" stroke="#0a0a0a" stroke-width="1.5"/></svg>
-      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M8 40 Q24 8 40 40" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><circle cx="24" cy="12" r="4" stroke="#0a0a0a" stroke-width="1.5"/></svg>
-      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M12 12 L36 12 L36 36 L12 36 Z" stroke="#0a0a0a" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/><line x1="12" y1="24" x2="36" y2="24" stroke="#0a0a0a" stroke-width="1"/><line x1="24" y1="12" x2="24" y2="36" stroke="#0a0a0a" stroke-width="1"/></svg>
-      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M6 24 C6 12 18 6 24 6 C30 6 42 12 42 24 C42 36 30 42 24 42 C18 42 6 36 6 24" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><path d="M18 18 L30 30 M30 18 L18 30" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 6 L30 18 L42 20 L33 28 L35 42 L24 36 L13 42 L15 28 L6 20 L18 18 Z" stroke="#0a0a0a" stroke-width="1.5" fill="none"/></svg>
+      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4"/><circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
+      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M8 40 Q24 8 40 40" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="24" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M12 12 L36 12 L36 36 L12 36 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/><line x1="12" y1="24" x2="36" y2="24" stroke="currentColor" stroke-width="1"/><line x1="24" y1="12" x2="24" y2="36" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M6 24 C6 12 18 6 24 6 C30 6 42 12 42 24 C42 36 30 42 24 42 C18 42 6 36 6 24" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M18 18 L30 30 M30 18 L18 30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <svg class="hero-doodle" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 6 L30 18 L42 20 L33 28 L35 42 L24 36 L13 42 L15 28 L6 20 L18 18 Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
     </div>
-    <h1>Sharpen your mind.</h1>
+    <h1>Sharpen<br><em>your mind.</em></h1>
     <p>Daily drills for speed, memory, and mental clarity. Pick a mode and start training.</p>
   </div>
   <div class="stats-strip">
@@ -283,6 +422,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 </div>
 <script>
 
+// ── Theme (light / dark) ──
+function applyThemeBtn(){ var b=document.getElementById('themeBtn'); if(b) b.textContent=document.documentElement.classList.contains('dark')?'\u2600\uFE0F':'\uD83C\uDF19'; }
+function toggleTheme(){
+  var d=document.documentElement.classList.toggle('dark');
+  try{ localStorage.setItem('hone_theme', d?'dark':'light'); }catch(e){}
+  applyThemeBtn();
+}
+applyThemeBtn();
+
 // ── State ──
 let stats = loadStats();
 let currentMode = null;
@@ -317,73 +465,73 @@ function goHome(){ show('homeScreen'); renderHome(); }
 var MODES = [
   {id:'math',name:'Math Sprint',cat:'Speed',color:'orange',
    desc:'Rapid-fire arithmetic. Addition, subtraction, multiplication, division — timed and relentless.',
-   svg:'<rect x="4" y="4" width="32" height="32" rx="8" stroke="#0a0a0a" stroke-width="1.5"/><text x="12" y="18" font-family="serif" font-size="11" font-weight="700" fill="#0a0a0a">2+3</text><line x1="10" y1="24" x2="30" y2="24" stroke="#0a0a0a" stroke-width="1"/><text x="16" y="34" font-family="serif" font-size="12" font-weight="700" fill="#0a0a0a">5</text>'},
+   svg:'<rect x="4" y="4" width="32" height="32" rx="8" stroke="currentColor" stroke-width="1.5"/><text x="12" y="18" font-family="serif" font-size="11" font-weight="700" fill="currentColor">2+3</text><line x1="10" y1="24" x2="30" y2="24" stroke="currentColor" stroke-width="1"/><text x="16" y="34" font-family="serif" font-size="12" font-weight="700" fill="currentColor">5</text>'},
   {id:'rapid',name:'Rapid Comparison',cat:'Speed',color:'orange',
    desc:'Two numbers flash. Tap the bigger one. Gets insanely fast. Trains snap judgment.',
-   svg:'<circle cx="12" cy="20" r="9" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><circle cx="28" cy="20" r="9" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="9" y="24" font-family="serif" font-size="11" font-weight="700" fill="#0a0a0a">7</text><text x="25" y="24" font-family="serif" font-size="11" font-weight="700" fill="#0a0a0a">4</text>'},
+   svg:'<circle cx="12" cy="20" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="28" cy="20" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="9" y="24" font-family="serif" font-size="11" font-weight="700" fill="currentColor">7</text><text x="25" y="24" font-family="serif" font-size="11" font-weight="700" fill="currentColor">4</text>'},
   {id:'truefalse',name:'True or False',cat:'Speed',color:'orange',
    desc:'A math statement flashes. Is it true or false? Builds snap evaluation.',
-   svg:'<path d="M8 20 L16 28 L32 12" stroke="#0a0a0a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="24" y1="24" x2="34" y2="34" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/><line x1="34" y1="24" x2="24" y2="34" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>'},
+   svg:'<path d="M8 20 L16 28 L32 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="24" y1="24" x2="34" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="34" y1="24" x2="24" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'},
   {id:'memory',name:'Number Memory',cat:'Memory',color:'blue',
    desc:'See a number sequence, remember it, type it back. Gets longer as you level up.',
-   svg:'<path d="M20 6 C12 6 6 12 6 20 C6 28 14 34 20 38 C26 34 34 28 34 20 C34 12 28 6 20 6" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><circle cx="15" cy="18" r="2.5" fill="#0a0a0a"/><circle cx="25" cy="18" r="2.5" fill="#0a0a0a"/><path d="M14 26 Q20 32 26 26" stroke="#0a0a0a" stroke-width="1.5" fill="none" stroke-linecap="round"/>'},
+   svg:'<path d="M20 6 C12 6 6 12 6 20 C6 28 14 34 20 38 C26 34 34 28 34 20 C34 12 28 6 20 6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="15" cy="18" r="2.5" fill="currentColor"/><circle cx="25" cy="18" r="2.5" fill="currentColor"/><path d="M14 26 Q20 32 26 26" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>'},
   {id:'gridmem',name:'Grid Memory',cat:'Memory',color:'blue',
    desc:'Cells light up on a grid, then disappear. Tap which ones were lit. Grid grows over time.',
-   svg:'<rect x="4" y="4" width="12" height="12" rx="2" stroke="#0a0a0a" stroke-width="1.2" fill="#0a0a0a"/><rect x="20" y="4" width="12" height="12" rx="2" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><rect x="4" y="20" width="12" height="12" rx="2" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><rect x="20" y="20" width="12" height="12" rx="2" stroke="#0a0a0a" stroke-width="1.2" fill="#0a0a0a"/>'},
+   svg:'<rect x="4" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="currentColor"/><rect x="20" y="4" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="4" y="20" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="20" y="20" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2" fill="currentColor"/>'},
   {id:'flashnum',name:'Flash Number',cat:'Memory',color:'blue',
    desc:'A number flashes for half a second. Type what you saw. Gets more digits as you improve.',
-   svg:'<circle cx="20" cy="20" r="15" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="11" y="25" font-family="serif" font-size="14" font-weight="700" fill="#0a0a0a">42</text><path d="M8 8 L12 4 M32 8 L28 4" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>'},
+   svg:'<circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="11" y="25" font-family="serif" font-size="14" font-weight="700" fill="currentColor">42</text><path d="M8 8 L12 4 M32 8 L28 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'},
   {id:'patterns',name:'Number Patterns',cat:'Logic',color:'green',
    desc:'Find the rule. What comes next in the sequence? Trains logical reasoning.',
-   svg:'<circle cx="8" cy="32" r="3" fill="#0a0a0a"/><circle cx="16" cy="24" r="3" fill="#0a0a0a"/><circle cx="24" cy="16" r="3" fill="#0a0a0a"/><circle cx="32" cy="8" r="3" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="2 2"/><line x1="10" y1="30" x2="14" y2="26" stroke="#0a0a0a" stroke-width="1.2"/><line x1="18" y1="22" x2="22" y2="18" stroke="#0a0a0a" stroke-width="1.2"/>'},
+   svg:'<circle cx="8" cy="32" r="3" fill="currentColor"/><circle cx="16" cy="24" r="3" fill="currentColor"/><circle cx="24" cy="16" r="3" fill="currentColor"/><circle cx="32" cy="8" r="3" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/><line x1="10" y1="30" x2="14" y2="26" stroke="currentColor" stroke-width="1.2"/><line x1="18" y1="22" x2="22" y2="18" stroke="currentColor" stroke-width="1.2"/>'},
   {id:'chains',name:'Mental Chains',cat:'Logic',color:'green',
    desc:'Start with a number, apply operations in your head. Builds working memory under pressure.',
-   svg:'<ellipse cx="14" cy="20" rx="10" ry="7" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><ellipse cx="26" cy="20" rx="10" ry="7" stroke="#0a0a0a" stroke-width="1.5" fill="none"/>'},
+   svg:'<ellipse cx="14" cy="20" rx="10" ry="7" stroke="currentColor" stroke-width="1.5" fill="none"/><ellipse cx="26" cy="20" rx="10" ry="7" stroke="currentColor" stroke-width="1.5" fill="none"/>'},
   {id:'operator',name:'Operator Hunt',cat:'Logic',color:'green',
    desc:'Given the numbers and result, find the missing operator. Gets harder with chained operations.',
-   svg:'<rect x="4" y="4" width="32" height="32" rx="8" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="8" y="24" font-family="serif" font-size="11" font-weight="700" fill="#0a0a0a">8</text><text x="16" y="24" font-family="serif" font-size="14" font-weight="700" fill="#0a0a0a">?</text><text x="24" y="24" font-family="serif" font-size="11" font-weight="700" fill="#0a0a0a">4</text>'},
+   svg:'<rect x="4" y="4" width="32" height="32" rx="8" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="8" y="24" font-family="serif" font-size="11" font-weight="700" fill="currentColor">8</text><text x="16" y="24" font-family="serif" font-size="14" font-weight="700" fill="currentColor">?</text><text x="24" y="24" font-family="serif" font-size="11" font-weight="700" fill="currentColor">4</text>'},
   {id:'fermi',name:'Fermi Estimation',cat:'Logic',color:'green',
    desc:"Don't calculate — estimate. How close can you get? Builds interview intuition.",
-   svg:'<path d="M8 32 L20 8 L32 32 Z" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="16" y="28" font-family="serif" font-size="9" font-weight="700" fill="#0a0a0a">~</text><circle cx="20" cy="20" r="3" stroke="#0a0a0a" stroke-width="1.2" stroke-dasharray="2 2"/>'},
+   svg:'<path d="M8 32 L20 8 L32 32 Z" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="16" y="28" font-family="serif" font-size="9" font-weight="700" fill="currentColor">~</text><circle cx="20" cy="20" r="3" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/>'},
   {id:'bigo',name:'Big O Snap',cat:'Code',color:'purple',
    desc:'See a code pattern, pick the time complexity. O(1)? O(n)? O(n²)? Instant decisions.',
-   svg:'<text x="4" y="28" font-family="serif" font-size="18" font-weight="700" fill="#0a0a0a">O</text><text x="18" y="32" font-family="serif" font-size="12" fill="#0a0a0a">(n)</text>'},
+   svg:'<text x="4" y="28" font-family="serif" font-size="18" font-weight="700" fill="currentColor">O</text><text x="18" y="32" font-family="serif" font-size="12" fill="currentColor">(n)</text>'},
   {id:'output',name:'Output Prediction',cat:'Code',color:'purple',
    desc:'Read a code snippet, predict the output. Tricky edge cases that test real understanding.',
-   svg:'<rect x="4" y="4" width="32" height="32" rx="6" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="8" y="16" font-family="monospace" font-size="8" fill="#0a0a0a">&gt;_</text><line x1="8" y1="22" x2="28" y2="22" stroke="#0a0a0a" stroke-width="1" opacity=".3"/><line x1="8" y1="28" x2="20" y2="28" stroke="#0a0a0a" stroke-width="1" opacity=".3"/>'},
+   svg:'<rect x="4" y="4" width="32" height="32" rx="6" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="8" y="16" font-family="monospace" font-size="8" fill="currentColor">&gt;_</text><line x1="8" y1="22" x2="28" y2="22" stroke="currentColor" stroke-width="1" opacity=".3"/><line x1="8" y1="28" x2="20" y2="28" stroke="currentColor" stroke-width="1" opacity=".3"/>'},
   {id:'ayahmatch',name:'Ayah Translation',cat:'Quran',color:'green',
    desc:'See an ayah in Arabic, pick the correct English translation. Builds comprehension fast.',
-   svg:'<rect x="4" y="4" width="32" height="14" rx="4" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><rect x="4" y="22" width="32" height="14" rx="4" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><line x1="20" y1="18" x2="20" y2="22" stroke="#0a0a0a" stroke-width="1.2"/>'},
+   svg:'<rect x="4" y="4" width="32" height="14" rx="4" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="4" y="22" width="32" height="14" rx="4" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="20" y1="18" x2="20" y2="22" stroke="currentColor" stroke-width="1.2"/>'},
   {id:'fillgap',name:'Fill the Gap',cat:'Quran',color:'green',
    desc:'An ayah with one word missing. Pick the correct word. Tests deep familiarity.',
-   svg:'<text x="4" y="20" font-family="serif" font-size="14" fill="#0a0a0a">___</text><text x="4" y="36" font-family="serif" font-size="10" fill="#0a0a0a">?</text><circle cx="30" cy="28" r="8" stroke="#0a0a0a" stroke-width="1.2" fill="none"/>'},
+   svg:'<text x="4" y="20" font-family="serif" font-size="14" fill="currentColor">___</text><text x="4" y="36" font-family="serif" font-size="10" fill="currentColor">?</text><circle cx="30" cy="28" r="8" stroke="currentColor" stroke-width="1.2" fill="none"/>'},
   {id:'surahid',name:'Surah Identifier',cat:'Quran',color:'green',
    desc:'See an ayah, identify which surah it belongs to. Builds navigation instinct.',
-   svg:'<path d="M10 4 L10 36 M10 4 C10 4 30 4 30 14 C30 24 10 24 10 24" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><circle cx="26" cy="32" r="5" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><text x="23" y="35" font-family="serif" font-size="7" fill="#0a0a0a">?</text>'},,
+   svg:'<path d="M10 4 L10 36 M10 4 C10 4 30 4 30 14 C30 24 10 24 10 24" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="26" cy="32" r="5" stroke="currentColor" stroke-width="1.2" fill="none"/><text x="23" y="35" font-family="serif" font-size="7" fill="currentColor">?</text>'},,
   {id:'letterflash',name:'Letter Flash',cat:'Quran',color:'green',
    desc:'A letter appears in connected form. Which letter is it? Drills the pairs that trip you up.',
-   svg:'<text x="10" y="30" font-size="24" fill="#0a0a0a" font-family="serif">\u0628</text><text x="28" y="16" font-size="12" fill="#0a0a0a">?</text>'},
+   svg:'<text x="10" y="30" font-size="24" fill="currentColor" font-family="serif">\u0628</text><text x="28" y="16" font-size="12" fill="currentColor">?</text>'},
   {id:'worddecode',name:'Word Decode',cat:'Quran',color:'green',
    desc:'A voweled Arabic word appears. Pick the correct transliteration. Forces real reading.',
-   svg:'<rect x="4" y="8" width="32" height="24" rx="6" stroke="#0a0a0a" stroke-width="1.2" fill="none"/><text x="12" y="24" font-size="10" fill="#0a0a0a" font-family="serif">\u0643\u064e</text><line x1="10" y1="34" x2="30" y2="34" stroke="#0a0a0a" stroke-width="1" stroke-dasharray="2 2"/>'},
+   svg:'<rect x="4" y="8" width="32" height="24" rx="6" stroke="currentColor" stroke-width="1.2" fill="none"/><text x="12" y="24" font-size="10" fill="currentColor" font-family="serif">\u0643\u064e</text><line x1="10" y1="34" x2="30" y2="34" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>'},
   {id:'wordflash',name:'Common Word Flash',cat:'Quran',color:'green',
    desc:'The most frequent Quranic words, rapid fire. See Arabic, pick the meaning. Pure repetition.',
-   svg:'<circle cx="20" cy="20" r="14" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><text x="13" y="24" font-size="12" fill="#0a0a0a" font-family="serif">\u0642\u0644</text>'},
+   svg:'<circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1.5" fill="none"/><text x="13" y="24" font-size="12" fill="currentColor" font-family="serif">\u0642\u0644</text>'},
   {id:'positiontr',name:'Position Trainer',cat:'Quran',color:'green',
    desc:'See a letter form — is it initial, medial, final, or isolated? Master how letters change shape.',
-   svg:'<text x="2" y="16" font-size="10" fill="#0a0a0a" font-family="serif">بـ</text><text x="18" y="16" font-size="10" fill="#0a0a0a" font-family="serif">ـبـ</text><text x="2" y="34" font-size="10" fill="#0a0a0a" font-family="serif">ـب</text><text x="18" y="34" font-size="10" fill="#0a0a0a" font-family="serif">ب</text>'},
+   svg:'<text x="2" y="16" font-size="10" fill="currentColor" font-family="serif">بـ</text><text x="18" y="16" font-size="10" fill="currentColor" font-family="serif">ـبـ</text><text x="2" y="34" font-size="10" fill="currentColor" font-family="serif">ـب</text><text x="18" y="34" font-size="10" fill="currentColor" font-family="serif">ب</text>'},
   {id:'dualstream',name:'Dual Stream',cat:'Memory',color:'blue',
    desc:'Two number sequences flash simultaneously. Track both. Answer questions about each.',
-   svg:'<line x1="8" y1="8" x2="8" y2="32" stroke="#0a0a0a" stroke-width="1.5"/><line x1="32" y1="8" x2="32" y2="32" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="8" cy="14" r="3" fill="#0a0a0a"/><circle cx="32" cy="20" r="3" fill="#0a0a0a"/><circle cx="8" cy="26" r="3" fill="#0a0a0a"/><circle cx="32" cy="28" r="3" fill="#0a0a0a"/>'},
+   svg:'<line x1="8" y1="8" x2="8" y2="32" stroke="currentColor" stroke-width="1.5"/><line x1="32" y1="8" x2="32" y2="32" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="14" r="3" fill="currentColor"/><circle cx="32" cy="20" r="3" fill="currentColor"/><circle cx="8" cy="26" r="3" fill="currentColor"/><circle cx="32" cy="28" r="3" fill="currentColor"/>'},
   {id:'chunking',name:'Chunking Trainer',cat:'Memory',color:'blue',
    desc:'A long number flashes for 3 seconds. Recall as many digits as possible. Trains pattern chunking.',
-   svg:'<text x="2" y="16" font-family="serif" font-size="9" font-weight="700" fill="#0a0a0a">4827</text><text x="2" y="30" font-family="serif" font-size="9" font-weight="700" fill="#0a0a0a">1953</text><rect x="24" y="8" width="12" height="26" rx="3" stroke="#0a0a0a" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>'},
+   svg:'<text x="2" y="16" font-family="serif" font-size="9" font-weight="700" fill="currentColor">4827</text><text x="2" y="30" font-family="serif" font-size="9" font-weight="700" fill="currentColor">1953</text><rect x="24" y="8" width="12" height="26" rx="3" stroke="currentColor" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>'},
   {id:'codehead',name:'Code in Your Head',cat:'Code',color:'purple',
    desc:'A snippet appears then vanishes. Trace it mentally. Type the output. No multiple choice.',
-   svg:'<rect x="4" y="4" width="32" height="32" rx="6" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><line x1="10" y1="14" x2="24" y2="14" stroke="#0a0a0a" stroke-width="1" opacity=".4"/><line x1="10" y1="20" x2="30" y2="20" stroke="#0a0a0a" stroke-width="1" opacity=".4"/><line x1="10" y1="26" x2="18" y2="26" stroke="#0a0a0a" stroke-width="1" opacity=".4"/><text x="26" y="34" font-size="10" fill="#0a0a0a">?</text>'},
+   svg:'<rect x="4" y="4" width="32" height="32" rx="6" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="10" y1="14" x2="24" y2="14" stroke="currentColor" stroke-width="1" opacity=".4"/><line x1="10" y1="20" x2="30" y2="20" stroke="currentColor" stroke-width="1" opacity=".4"/><line x1="10" y1="26" x2="18" y2="26" stroke="currentColor" stroke-width="1" opacity=".4"/><text x="26" y="34" font-size="10" fill="currentColor">?</text>'},
   {id:'calibrate',name:'Confidence Calibration',cat:'Logic',color:'green',
    desc:'Answer a question, then rate how confident you are. Tracks if your confidence matches reality.',
-   svg:'<circle cx="20" cy="20" r="14" stroke="#0a0a0a" stroke-width="1.5" fill="none"/><path d="M12 20 L18 20 L20 12 L22 28 L28 20" stroke="#0a0a0a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'},
+   svg:'<circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 20 L18 20 L20 12 L22 28 L28 20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'},
 ];
 var activeCat = null;
 var CAT_DESCS = {Speed:'Rapid-fire drills for processing speed',Memory:'Train recall and visual memory',Logic:'Patterns, estimation, and reasoning'};
@@ -855,7 +1003,7 @@ function nextRapid(){
     <div class="timer-ring-wrap">
       <svg class="timer-svg" viewBox="0 0 80 80">
         <circle class="timer-bg" cx="40" cy="40" r="34"/>
-        <circle class="timer-arc" id="timerArc" cx="40" cy="40" r="34" stroke="#0a0a0a"
+        <circle class="timer-arc" id="timerArc" cx="40" cy="40" r="34" stroke="currentColor"
           stroke-dasharray="${2*Math.PI*34}" stroke-dashoffset="0"/>
       </svg>
       <div class="timer-text" id="timerText">${rapidTimeLeft}</div>
@@ -878,7 +1026,7 @@ function startRapidTimer(){
     if(txt) txt.textContent=rapidTimeLeft;
     updateRapidArc();
     const arc=document.getElementById('timerArc');
-    if(arc) arc.style.stroke = rapidTimeLeft<=5?'var(--red)':rapidTimeLeft<=10?'#eab308':'#0a0a0a';
+    if(arc) arc.style.stroke = rapidTimeLeft<=5?'var(--red)':rapidTimeLeft<=10?'#eab308':'var(--text)';
     if(rapidTimeLeft<=0){ clearInterval(rapidTimer); endRapid(); }
   },1000);
 }
